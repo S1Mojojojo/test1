@@ -1,0 +1,33 @@
+karpenterNodePools:
+  - name: nodepool-1
+    apiVersion: karpenter.sh/v1
+    spec:
+      template:
+        metadata:
+          labels:
+            node-group: nodepool-1
+        spec:
+          nodeClassRef:
+            name: generic
+            kind: EC2NodeClass
+            group: karpenter.k8s.aws
+          startupTaints:
+            - key: node.cilium.io/agent-not-ready
+              value: "true"
+              effect: NoExecute
+          taints:
+            - key: node-group
+              effect: NoSchedule
+              value: nodepool-1
+          requirements:
+            - key: karpenter.sh/capacity-type
+              operator: In
+              values: ["on-demand"]
+            - key: karpenter.k8s.aws/instance-family
+              operator: In
+              values: ["r6a"]
+            - key: karpenter.k8s.aws/instance-memory
+              operator: In
+              values: ["4096"]
+      limits:
+        memory: 192Gi

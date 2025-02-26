@@ -9,7 +9,7 @@ karpenterNodePools:
         spec:
           nodeClassRef:
             name: generic
-            kin: EC2NodeClass
+            kind: EC2NodeClass
             group: karpenter.k8s.aws
           startupTaints:
             - key: node.cilium.io/agent-not-ready
